@@ -18,6 +18,7 @@
         <a href="/upload" on:click={handleUploadClick}>Új recept</a>
         {#if $user}
             <span>{$user}</span> <!-- Ha van bejelentkezett user, mutatjuk a nevét -->
+            <span>{$user}</span>
         {:else}
             <a href="/login">Bejelentkezés</a>
         {/if}
