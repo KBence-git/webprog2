@@ -30,17 +30,16 @@
 
         {#if $user}
             <span>{$user}</span> <!-- Ha van bejelentkezett user, mutatjuk a nevét -->
-            <span>{$user}</span>
             <div class="user-dropdown">
                 <span on:click={toggleLogout} class="username">{$user}</span>
                 {#if showLogout}
                     <div class="logout-button" on:click={logout}>
-                        Kijelentkezés
+                        Logout
                     </div>
                 {/if}
             </div>
         {:else}
-            <a href="/login">Log In</a>
+            <a href="/login">LogIn</a>
         {/if}
     </div>
 </nav>

@@ -1,38 +1,123 @@
-.ingredient-field {
+.upload-form {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
+  margin-top: 4rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 
-.ingredient-input {
-  position: relative;
-}
+  label {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    align-self: flex-start;
+  }
 
-.suggestions {
-  list-style: none;
-  padding: 0;
-  margin: 0.2rem 0 0 0;
-  width: 300px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  max-height: 200px;
-  overflow-y: auto;
-  position: absolute;
-  z-index: 100;
-}
+  input[type="text"],
+  input[type="number"],
+  input[type="file"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    box-shadow: none;
 
-.suggestions li {
-  padding: 0.5rem;
-  cursor: pointer;
-}
+    &:focus {
+      border-color: #999;
+      outline: none;
+      background-color: #fff;
+    }
+  }
 
-.suggestions li:hover {
-  background-color: #f0f0f0;
-}
-.amount-input {
-  width: 80px;
-}
+  .ingredient-field {
+    width: 105%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
+  .ingredient-input {
+    width: 95%;
+  }
+
+  .amount-unit-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .amount-input {
+    flex: 1;
+    max-width: 70px;
+  }
+
+  .ingredient-unit {
+    flex: 1;
+    max-width: 117px;
+  }
 
 
+  .add-ingredient-button {
+    margin-top: 1rem;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #d0d0d0;
+    }
+  }
+
+  .submit-button {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  .suggestions {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    li {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #eee;
+      }
+    }
+  }
+}

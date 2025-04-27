@@ -51,7 +51,6 @@
     }
 
     async function saveRecipe() {
-        // Először átalakítjuk az ingredients listát
         const formattedIngredients = ingredients.map(ingredient => ({
             name: ingredient.name,
             amount: ingredient.amount,
@@ -63,7 +62,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 title,
-                ingredients: formattedIngredients, // <<< EZT küldjük el!
+                ingredients: formattedIngredients,
                 description,
                 username: $user
             })
@@ -90,6 +89,7 @@
             <div class="ingredient-input">
                 <input
                         type="text"
+                        class="ingredient-name"
                         bind:value={ingredient.name}
                         placeholder="Add ingredient"
                         on:input={(e) => updateIngredient(index, e.target.value)}
@@ -104,23 +104,30 @@
             </div>
 
             {#if ingredient.selectedMeasure}
-                <input
-                        type="number"
-                        min="0"
-                        placeholder="Ammount"
-                        bind:value={ingredient.amount}
-                        on:input={(e) => updateAmount(index, e.target.value)}
-                        class="amount-input"
-                />
+                <div class="amount-unit-row">
+                    <input
+                            type="number"
+                            min="0"
+                            placeholder="Amount"
+                            bind:value={ingredient.amount}
+                            on:input={(e) => updateAmount(index, e.target.value)}
+                            class="amount-input"
+                    />
 
-                <select bind:value={ingredient.selectedMeasure} on:change={(e) => updateSelectedMeasure(index, e.target.value)}>
-                    {#each ingredient.measures as measure}
-                        <option value={measure.label}>{measure.label}</option>
-                    {/each}
-                </select>
+                    <select
+                            class="ingredient-unit"
+                            bind:value={ingredient.selectedMeasure}
+                            on:change={(e) => updateSelectedMeasure(index, e.target.value)}
+                    >
+                        {#each ingredient.measures as measure}
+                            <option value={measure.label}>{measure.label}</option>
+                        {/each}
+                    </select>
+                </div>
             {/if}
         </div>
     {/each}
+
 
     <button type="button" on:click={addIngredient} class="add-ingredient-button">
         + Add new ingredient
