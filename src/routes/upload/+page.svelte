@@ -2,6 +2,8 @@
     import '../../styles/upload.scss';
     import { searchIngredients } from '../../lib/edamam.js';
     import { goto } from '$app/navigation'; // Ha sikeres a mentés, átirányítunk máshova
+    import { user } from '../../stores/user.js';
+    import { goto } from '$app/navigation';
 
     let title = '';
     let ingredients = [{ name: '', measures: [], selectedMeasure: '', amount: '' }];
@@ -55,7 +57,8 @@
             body: JSON.stringify({
                 title,
                 ingredients: formattedIngredients,
-                description
+                description,
+                username: $user  // <<< hozzáadjuk a bejelentkezett felhasználó nevét
             })
         });
 
@@ -67,6 +70,7 @@
         }
     }
 </script>
+
 
 
 <form class="upload-form">
