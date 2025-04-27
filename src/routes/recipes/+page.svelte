@@ -1,6 +1,8 @@
 <script>
+    import { onMount } from 'svelte';
     import '../../styles/recipes.scss';
     import { getNutrition } from '../../lib/edamam-nutrition.js'; // új API hívás tápanyag infókhoz
+    import { getNutrition } from '../../lib/edamam-nutrition.js';
 
     let recipes = [];
     let selectedRecipe = null;
@@ -10,10 +12,13 @@
         const response = await fetch('/api/recipes');
         if (response.ok) {
             recipes = await response.json();
+            recipes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         }
     }
 
-    fetchRecipes();
+    onMount(() => {
+        fetchRecipes();
+    });
 
     async function openRecipe(recipe) {
         selectedRecipe = recipe;
@@ -27,7 +32,7 @@
 </script>
 
 <section class="recipes-page">
-    <h2>Recipes</h2>
+    <h1>Recipes</h1>
 
     {#if recipes.length > 0}
         <div class="recipes-grid">
