@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1745751364293,
+    "title": "Első",
+    "ingredients": [
+      {
+        "name": "Chicken",
+        "amount": "5",
+        "unit": "Slice"
+      }
+    ],
+    "description": "Első"
+  }
+]
