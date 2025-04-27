@@ -1,5 +1,6 @@
 <script>
-    import '../../styles/register.scss';
+    import '../../styles/auth.scss';
+
     let username = '';
     let email = '';
     let password = '';
@@ -17,13 +18,16 @@
     }
 </script>
 
-<form on:submit|preventDefault={register} class="register-form">
+<form on:submit|preventDefault={register} class="auth-form">
     <h2>Regisztráció</h2>
     <input type="text" placeholder="Felhasználónév" bind:value={username} required />
     <input type="email" placeholder="Email" bind:value={email} required />
     <input type="password" placeholder="Jelszó" bind:value={password} required />
     <button type="submit">Regisztráció</button>
+
     {#if message}
         <p>{message}</p>
     {/if}
+
+<p class="option-prompt">Már van fiókod? <a href="/login">Jelentkezz be!</a></p>
 </form>
