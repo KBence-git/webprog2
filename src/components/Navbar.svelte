@@ -11,16 +11,16 @@
 </script>
 
 <nav>
-    <div class="logo">ReceptTár</div>
+    <div class="logo">Recipes Garden</div>
     <div class="nav-links">
-        <a href="/">Főoldal</a>
-        <a href="/recipes">Receptek</a>
-        <a href="/upload" on:click={handleUploadClick}>Új recept</a>
+        <a href="/">Main Page</a>
+        <a href="/recipes">Recipes</a>
+        <a href="/upload" on:click={handleUploadClick}>Upload Recipe</a>
         {#if $user}
             <span>{$user}</span> <!-- Ha van bejelentkezett user, mutatjuk a nevét -->
             <span>{$user}</span>
         {:else}
-            <a href="/login">Bejelentkezés</a>
+            <a href="/login">Login</a>
         {/if}
     </div>
 </nav>

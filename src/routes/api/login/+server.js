@@ -16,12 +16,12 @@ export async function POST({ request }) {
         );
 
         if (user) {
-            return new Response(JSON.stringify({ message: 'Sikeres bejelentkezés!', username: user.username }), { status: 200 });
+            return new Response(JSON.stringify({ message: 'SuccessFull Login!', username: user.username }), { status: 200 });
         } else {
-            return new Response(JSON.stringify({ message: 'Hibás adatok!' }), { status: 401 });
+            return new Response(JSON.stringify({ message: 'Wrong Credentials!' }), { status: 401 });
         }
     } catch (error) {
         console.error(error);
-        return new Response(JSON.stringify({ message: 'Szerver hiba történt.' }), { status: 500 });
+        return new Response(JSON.stringify({ message: 'Server Error.' }), { status: 500 });
     }
 }

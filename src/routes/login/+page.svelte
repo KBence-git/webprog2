@@ -26,13 +26,13 @@
 
 <form on:submit|preventDefault={login} class="auth-form">
     <h2>Bejelentkezés</h2>
-    <input type="text" placeholder="Email vagy Felhasználónév" bind:value={identifier} required />
-    <input type="password" placeholder="Jelszó" bind:value={password} required />
-    <button type="submit">Bejelentkezés</button>
+    <input type="text" placeholder="Email/Username" bind:value={identifier} required />
+    <input type="password" placeholder="Password" bind:value={password} required />
+    <button type="submit">Login</button>
 
     {#if message}
         <p>{message}</p>
     {/if}
 
-    <p class="option-prompt">Még nincs fiókod? <a href="/register">Regisztrálj egyet!</a></p>
+    <p class="option-prompt">You don't have an account yet? <a href="/register">Register One!</a></p>
 </form>

@@ -16,20 +16,20 @@ export async function POST({ request }) {
         }
 
         if (users.find(user => user.username === username)) {
-            return new Response(JSON.stringify({ message: 'Ez a felhasználónév már létezik.' }), { status: 400 });
+            return new Response(JSON.stringify({ message: 'Username already used.' }), { status: 400 });
         }
 
         if (users.find(user => user.email === email)) {
-            return new Response(JSON.stringify({ message: 'Ez az email már regisztrálva van.' }), { status: 400 });
+            return new Response(JSON.stringify({ message: 'Username already used,' }), { status: 400 });
         }
 
         users.push({ username, email, password });
 
         await fs.writeFile(filePath, JSON.stringify(users, null, 2));
 
-        return new Response(JSON.stringify({ message: 'Sikeres regisztráció!' }), { status: 200 });
+        return new Response(JSON.stringify({ message: 'Successful registration' }), { status: 200 });
     } catch (error) {
         console.error(error);
-        return new Response(JSON.stringify({ message: 'Hiba történt a regisztráció során.' }), { status: 500 });
+        return new Response(JSON.stringify({ message: 'Registration Error.' }), { status: 500 });
     }
 }

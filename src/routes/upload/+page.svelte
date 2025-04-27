@@ -1,7 +1,6 @@
 <script>
     import '../../styles/upload.scss';
     import { searchIngredients } from '../../lib/edamam.js';
-    import { goto } from '$app/navigation'; // Ha sikeres a mentés, átirányítunk máshova
     import { user } from '../../stores/user.js';
     import { goto } from '$app/navigation';
 
@@ -29,12 +28,19 @@
         }
     }
 
+    const allowedUnits = ['gram', 'cup', 'piece', 'slice', 'kilogram', 'ounce', 'pound'];
+
     function selectSuggestion(index, suggestion) {
         ingredients[index].name = suggestion.label;
-        ingredients[index].measures = suggestion.measures;
-        ingredients[index].selectedMeasure = suggestion.measures.length > 0 ? suggestion.measures[0].label : '';
+        ingredients[index].measures = suggestion.measures.filter(measure =>
+            allowedUnits.includes(measure.label.toLowerCase())
+        );
+        ingredients[index].selectedMeasure = ingredients[index].measures.length > 0
+            ? ingredients[index].measures[0].label
+            : '';
         suggestions[index] = [];
     }
+
 
     function updateAmount(index, value) {
         ingredients[index].amount = value;
@@ -45,6 +51,7 @@
     }
 
     async function saveRecipe() {
+        // Először átalakítjuk az ingredients listát
         const formattedIngredients = ingredients.map(ingredient => ({
             name: ingredient.name,
             amount: ingredient.amount,
@@ -56,9 +63,9 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 title,
-                ingredients: formattedIngredients,
+                ingredients: formattedIngredients, // <<< EZT küldjük el!
                 description,
-                username: $user  // <<< hozzáadjuk a bejelentkezett felhasználó nevét
+                username: $user
             })
         });
 
@@ -71,22 +78,20 @@
     }
 </script>
 
-
-
 <form class="upload-form">
-    <h2>Új recept hozzáadása</h2>
+    <h2>Upload Recipe</h2>
 
-    <label>Recept elnevezése:</label>
-    <input type="text" bind:value={title} placeholder="Írd be a recept nevét" required />
+    <label>Recipe Name:</label>
+    <input type="text" bind:value={title} placeholder="Recipe Name" required />
 
-    <label>Recept összetevők:</label>
+    <label>Recipe ingredients:</label>
     {#each ingredients as ingredient, index}
         <div class="ingredient-field">
             <div class="ingredient-input">
                 <input
                         type="text"
                         bind:value={ingredient.name}
-                        placeholder="Összetevő megadása"
+                        placeholder="Add ingredient"
                         on:input={(e) => updateIngredient(index, e.target.value)}
                 />
                 {#if suggestions[index].length > 0}
@@ -102,7 +107,7 @@
                 <input
                         type="number"
                         min="0"
-                        placeholder="Mennyiség"
+                        placeholder="Ammount"
                         bind:value={ingredient.amount}
                         on:input={(e) => updateAmount(index, e.target.value)}
                         class="amount-input"
@@ -118,11 +123,12 @@
     {/each}
 
     <button type="button" on:click={addIngredient} class="add-ingredient-button">
-        + Új összetevő hozzáadása
+        + Add new ingredient
     </button>
 
-    <label>Recept leírása:</label>
-    <textarea bind:value={description} placeholder="Írd le a recept elkészítését" required></textarea>
+    <label>Recipe Description:</label>
+    <textarea bind:value={description} placeholder="Description for the recipe" required></textarea>
 
-    <button type="button" on:click={saveRecipe} class="submit-button">Recept mentése</button>
+    <button type="button" on:click={saveRecipe} class="submit-button">Save Recipe</button>
+
 </form>

@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import dayjs from 'dayjs';
 
 export async function POST({ request }) {
     const { title, ingredients, description, username } = await request.json();
@@ -20,17 +21,19 @@ export async function POST({ request }) {
             title,
             ingredients,
             description,
-            username
+            username,
+            createdAt: dayjs().format('YYYY-MM-DD HH:mm')
         };
+
 
         recipes.push(newRecipe);
 
         await fs.writeFile(filePath, JSON.stringify(recipes, null, 2));
 
-        return new Response(JSON.stringify({ message: 'Recept sikeresen elmentve!' }), { status: 200 });
+        return new Response(JSON.stringify({ message: 'Recipe Succesfully Saved!' }), { status: 200 });
     } catch (error) {
         console.error(error);
-        return new Response(JSON.stringify({ message: 'Hiba történt a recept mentése közben.' }), { status: 500 });
+        return new Response(JSON.stringify({ message: 'Recipe Save Failure.' }), { status: 500 });
     }
 }
 

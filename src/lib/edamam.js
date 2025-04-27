@@ -10,11 +10,8 @@ export async function searchIngredients(query) {
         const response = await fetch(url);
 
     // A találatokból csak az élelmiszer neveket szedjük ki
-    if (data.hints) {
-        return data.hints.map(hint => hint.food.label);
-    }
         if (!response.ok) {
-            console.error('Hiba az Edamam API hívásnál', await response.text());
+            console.error('Edamam API call error', await response.text());
             return [];
         }
 

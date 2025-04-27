@@ -3,6 +3,6 @@
 </script>
 
 <section class="hero">
-    <h1>Üdvözlünk a ReceptTárban!</h1>
-    <p>Fedezd fel, tölts fel, és oszd meg kedvenc receptjeidet!</p>
+    <h1>Welcome to the Recipes Garden!</h1>
+    <p>Discover tons of recipes and share your own with others.</p>
 </section>
