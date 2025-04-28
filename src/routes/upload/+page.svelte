@@ -9,6 +9,7 @@
     let description = '';
     let suggestions = [[]];
     let message = '';
+    let image = null;
 
     function addIngredient() {
         ingredients = [...ingredients, { name: '', measures: [], selectedMeasure: '', amount: '' }];
@@ -74,24 +75,57 @@
             unit: ingredient.selectedMeasure
         }));
 
-        const response = await fetch('/api/recipes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title,
-                ingredients: formattedIngredients,
-                description,
-                username: $user
-            })
-        });
+        let imageUrl = '';
 
-        const result = await response.json();
-        message = result.message;
+        // Ha van kép
+        if (image) {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                imageUrl = e.target.result;
 
-        if (response.ok) {
-            goto('/recipes');
+                const response = await fetch('/api/recipes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title,
+                        ingredients: formattedIngredients,
+                        description,
+                        username: $user,
+                        image: imageUrl
+                    })
+                });
+
+                const result = await response.json();
+                message = result.message;
+
+                if (response.ok) {
+                    goto('/recipes');
+                }
+            };
+            reader.readAsDataURL(image);
+        } else {
+            // Ha nincs kép
+            const response = await fetch('/api/recipes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title,
+                    ingredients: formattedIngredients,
+                    description,
+                    username: $user,
+                    image: ''
+                })
+            });
+
+            const result = await response.json();
+            message = result.message;
+
+            if (response.ok) {
+                goto('/recipes');
+            }
         }
     }
+
 
 
 </script>

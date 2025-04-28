@@ -1,23 +1,19 @@
 <script>
     import { onMount } from 'svelte';
+    import { user } from '../../stores/user.js';
     import '../../styles/recipes.scss';
-    import { getNutrition } from '../../lib/edamam-nutrition.js'; // új API hívás tápanyag infókhoz
     import { getNutrition } from '../../lib/edamam-nutrition.js';
 
     let recipes = [];
     let selectedRecipe = null;
     let nutrition = null;
 
-    async function fetchRecipes() {
+    onMount(async () => {
         const response = await fetch('/api/recipes');
         if (response.ok) {
-            recipes = await response.json();
-            recipes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            const allRecipes = await response.json();
+            recipes = allRecipes.filter(recipe => recipe.username === $user);
         }
-    }
-
-    onMount(() => {
-        fetchRecipes();
     });
 
     async function openRecipe(recipe) {
@@ -29,30 +25,46 @@
         selectedRecipe = null;
         nutrition = null;
     }
+
+    async function deleteRecipe(id) {
+        if (!confirm('Are you sure you want to delete this recipe?')) return;
+
+        const response = await fetch('/api/recipes', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+
+        if (response.ok) {
+            recipes = recipes.filter(recipe => recipe.id !== id);
+            if (selectedRecipe && selectedRecipe.id === id) {
+                selectedRecipe = null;
+                nutrition = null;
+            }
+        }
+    }
 </script>
 
 <section class="recipes-page">
-    <h1>Recipes</h1>
+    <h1>My Recipes</h1>
 
     {#if recipes.length > 0}
         <div class="recipes-grid">
             {#each recipes as recipe}
-                <div class="recipe-card" on:click={() => openRecipe(recipe)}>
-                    <h3>{recipe.title}</h3>
-                    {#if recipe.image}
-                        <img src={recipe.image} alt="Recipe Image" class="card-image" />
-                    {/if}
-                    <p class="creator">Shared by: {recipe.username}</p>
-                    {#if recipe.createdAt}
-                        <p class="creation-date">Creation Date: {recipe.createdAt}</p>
-                    {/if}
+                <div class="recipe-card">
+                    <button class="delete-button" on:click={() => deleteRecipe(recipe.id)}>×</button>
+                    <div on:click={() => openRecipe(recipe)}>
+                        <h3>{recipe.title}</h3>
+                        <p class="creator">Shared by: {recipe.username}</p>
+                        {#if recipe.createdAt}
+                            <p class="creation-date">Creation Date: {recipe.createdAt}</p>
+                        {/if}
+                    </div>
                 </div>
             {/each}
-
-
         </div>
     {:else}
-        <p>No Recipes.</p>
+        <p>You have not uploaded any recipes yet.</p>
     {/if}
 
     {#if selectedRecipe}
@@ -75,13 +87,13 @@
                         <li>Protein: {nutrition.protein} g</li>
                         <li>Carbohydrates: {nutrition.carbs} g</li>
                         <li>Fat: {nutrition.fat} g</li>
-                        <li>Calorie: {nutrition.calories} kcal</li>
+                        <li>Calories: {nutrition.calories} kcal</li>
                     </ul>
                 {:else}
-                    <p>Nutrients calculation in progress...</p>
+                    <p>Nutrients loading...</p>
                 {/if}
 
-                <h3>Details:</h3>
+                <h3>Description:</h3>
                 <p>{selectedRecipe.description}</p>
             </div>
         </div>

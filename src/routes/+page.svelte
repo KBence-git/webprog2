@@ -18,7 +18,7 @@
         {:else}
             <a href="/login" class="hero-card">
                 <img src="login.jpg" alt="LogIn icon" class="hero-icon" />
-                <h2>Log In</h2>
+                <h2>LogIn</h2>
             </a>
         {/if}
     </div>
