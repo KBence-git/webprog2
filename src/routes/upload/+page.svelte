@@ -50,7 +50,24 @@
         ingredients[index].selectedMeasure = value;
     }
 
+    let titleError = false;
+    let descriptionError = false;
+
     async function saveRecipe() {
+        titleError = false;
+        descriptionError = false;
+
+        if (!title.trim()) {
+            titleError = true;
+        }
+        if (!description.trim()) {
+            descriptionError = true;
+        }
+
+        if (titleError || descriptionError) {
+            return;
+        }
+
         const formattedIngredients = ingredients.map(ingredient => ({
             name: ingredient.name,
             amount: ingredient.amount,
@@ -75,13 +92,24 @@
             goto('/recipes');
         }
     }
+
+
 </script>
 
 <form class="upload-form">
     <h2>Upload Recipe</h2>
 
     <label>Recipe Name:</label>
-    <input type="text" bind:value={title} placeholder="Recipe Name" required />
+    <input
+            type="text"
+            bind:value={title}
+            placeholder="Recipe Name"
+            class:title-error={titleError}
+    />
+    {#if titleError}
+        <p class="error-message">Missing detail</p>
+    {/if}
+
 
     <label>Recipe ingredients:</label>
     {#each ingredients as ingredient, index}
@@ -134,8 +162,16 @@
     </button>
 
     <label>Recipe Description:</label>
-    <textarea bind:value={description} placeholder="Description for the recipe" required></textarea>
+    <textarea
+            bind:value={description}
+            placeholder="Description for the recipe"
+            class:description-error={descriptionError}
+    ></textarea>
+    {#if descriptionError}
+        <p class="error-message">Missing detail</p>
+    {/if}
 
     <button type="button" on:click={saveRecipe} class="submit-button">Save Recipe</button>
+
 
 </form>
