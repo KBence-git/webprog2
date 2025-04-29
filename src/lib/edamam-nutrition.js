@@ -1,5 +1,6 @@
-const APP_ID = '7fae5cff';
-const APP_KEY = '21fe99e0f97a4384f58e914120467246';
+const APP_ID = '4a14b946';
+const APP_KEY = 'b94aa901150dd3361a2e4275eb871807';
+// Ha túl lenne lépve a felhasználási limit akkor src\lib\API.txt-ben vannak új kulcsok
 
 export async function getNutrition(ingredients) {
     const url = `https://api.edamam.com/api/nutrition-details?app_id=${APP_ID}&app_key=${APP_KEY}`;
