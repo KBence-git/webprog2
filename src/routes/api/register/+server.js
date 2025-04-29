@@ -6,7 +6,7 @@ import path from 'path';
 const USERS_FILE = path.resolve('src', 'data', 'users.json');
 
 export async function POST({ request }) {
-    const { username, password } = await request.json();
+    const { username, password, email } = await request.json();
 
     let users = [];
 
@@ -20,7 +20,7 @@ export async function POST({ request }) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    users.push({ username, password: hashedPassword });
+    users.push({ username, email, password: hashedPassword });
     writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 
     return json({ message: 'Registration successful' });
