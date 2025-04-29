@@ -1,27 +1,30 @@
-import fs from 'fs/promises';
+import { json } from '@sveltejs/kit';
+import bcrypt from 'bcryptjs';
+import { readFileSync, existsSync } from 'fs';
 import path from 'path';
+
+const USERS_FILE = path.resolve('src', 'data', 'users.json');
 
 export async function POST({ request }) {
     const { identifier, password } = await request.json();
-    const filePath = path.resolve('src/data/users.json');
 
-    try {
-        const data = await fs.readFile(filePath, 'utf-8');
-        const users = JSON.parse(data);
+    let users = [];
 
-        const user = users.find(
-            user =>
-                (user.username === identifier || user.email === identifier) &&
-                user.password === password
-        );
-
-        if (user) {
-            return new Response(JSON.stringify({ message: 'SuccessFull Login!', username: user.username }), { status: 200 });
-        } else {
-            return new Response(JSON.stringify({ message: 'Wrong Credentials!' }), { status: 401 });
-        }
-    } catch (error) {
-        console.error(error);
-        return new Response(JSON.stringify({ message: 'Server Error.' }), { status: 500 });
+    if (existsSync(USERS_FILE)) {
+        users = JSON.parse(readFileSync(USERS_FILE, 'utf-8'));
     }
+
+    const user = users.find(u => u.username === identifier || u.email === identifier);
+
+    if (!user) {
+        return json({ message: 'Invalid credentials' }, { status: 401 });
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+        return json({ message: 'Invalid credentials' }, { status: 401 });
+    }
+
+    return json({ message: 'Login successful', username: user.username }, { status: 200 });
 }

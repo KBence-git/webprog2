@@ -1,35 +1,27 @@
-import fs from 'fs/promises';
+import { json } from '@sveltejs/kit';
+import bcrypt from 'bcryptjs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import path from 'path';
 
+const USERS_FILE = path.resolve('src', 'data', 'users.json');
+
 export async function POST({ request }) {
-    const { username, email, password } = await request.json();
-    const filePath = path.resolve('src/data/users.json');
+    const { username, password } = await request.json();
 
-    try {
-        let users = [];
+    let users = [];
 
-        try {
-            const data = await fs.readFile(filePath, 'utf-8');
-            users = JSON.parse(data);
-        } catch (error) {
-            // Ha nincs fájl, az nem gond
-        }
-
-        if (users.find(user => user.username === username)) {
-            return new Response(JSON.stringify({ message: 'Username already used.' }), { status: 400 });
-        }
-
-        if (users.find(user => user.email === email)) {
-            return new Response(JSON.stringify({ message: 'Username already used,' }), { status: 400 });
-        }
-
-        users.push({ username, email, password });
-
-        await fs.writeFile(filePath, JSON.stringify(users, null, 2));
-
-        return new Response(JSON.stringify({ message: 'Successful registration' }), { status: 200 });
-    } catch (error) {
-        console.error(error);
-        return new Response(JSON.stringify({ message: 'Registration Error.' }), { status: 500 });
+    if (existsSync(USERS_FILE)) {
+        users = JSON.parse(readFileSync(USERS_FILE, 'utf-8'));
     }
+
+    if (users.find(user => user.username === username)) {
+        return json({ message: 'User already exists' }, { status: 400 });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    users.push({ username, password: hashedPassword });
+    writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+
+    return json({ message: 'Registration successful' });
 }
