@@ -3,6 +3,15 @@
     import { searchIngredients } from '../../lib/edamam.js';
     import { user } from '../../stores/user.js';
     import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
+
+    onMount(() => {
+        const user = localStorage.getItem('user');
+
+        if (!user) {
+            goto('/login');
+        }
+    });
 
     let title = '';
     let ingredients = [{ name: '', measures: [], selectedMeasure: '', amount: '' }];

@@ -171,4 +171,33 @@
   border-radius: 8px;
   margin: 0.5rem 0;
 }
+.empty-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 250px;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  img {
+    width: 80px;
+    height: 80px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  p {
+    color: #666;
+    font-size: 1rem;
+  }
+}
 

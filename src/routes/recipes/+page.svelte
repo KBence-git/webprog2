@@ -3,6 +3,7 @@
     import '../../styles/recipes.scss';
     import { getNutrition } from '../../lib/edamam-nutrition.js'; // új API hívás tápanyag infókhoz
     import { getNutrition } from '../../lib/edamam-nutrition.js';
+    import { goto } from '$app/navigation';
 
     let recipes = [];
     let selectedRecipe = null;
@@ -39,20 +40,19 @@
             {#each recipes as recipe}
                 <div class="recipe-card" on:click={() => openRecipe(recipe)}>
                     <h3>{recipe.title}</h3>
-                    {#if recipe.image}
-                        <img src={recipe.image} alt="Recipe Image" class="card-image" />
-                    {/if}
                     <p class="creator">Shared by: {recipe.username}</p>
                     {#if recipe.createdAt}
                         <p class="creation-date">Creation Date: {recipe.createdAt}</p>
                     {/if}
                 </div>
             {/each}
-
-
         </div>
     {:else}
-        <p>No Recipes.</p>
+        <div class="empty-card" on:click={() => goto('/upload')} style="cursor: pointer;">
+            <img src="/addrecipe.png" alt="Upload Icon" class="card-image" />
+            <h3>No Recipes Yet</h3>
+            <p>Start by uploading your first recipe!</p>
+        </div>
     {/if}
 
     {#if selectedRecipe}
