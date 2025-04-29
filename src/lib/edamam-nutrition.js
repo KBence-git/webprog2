@@ -1,5 +1,5 @@
-const APP_ID = '77b85c83';
-const APP_KEY = 'fc277721ba7f5c4abc3b6baf747f37b2';
+const APP_ID = '7fae5cff';
+const APP_KEY = '21fe99e0f97a4384f58e914120467246';
 
 export async function getNutrition(ingredients) {
     const url = `https://api.edamam.com/api/nutrition-details?app_id=${APP_ID}&app_key=${APP_KEY}`;

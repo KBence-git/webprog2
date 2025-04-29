@@ -1,5 +1,6 @@
 <script>
-    import '../../styles/auth.scss';
+    import AuthForm from '../../components/AuthForm.svelte';
+    import '../../styles/auth.scss'
     import { goto } from '$app/navigation';
     import { user } from '../../stores/user.js';
 
@@ -22,17 +23,29 @@
             goto('/');
         }
     }
+
+    const fields = [
+        {
+            type: 'text',
+            placeholder: 'Email/Username',
+            value: identifier,
+            onInput: val => identifier = val
+        },
+        {
+            type: 'password',
+            placeholder: 'Password',
+            value: password,
+            onInput: val => password = val
+        }
+    ];
 </script>
 
-<form on:submit|preventDefault={login} class="auth-form">
-    <h2>Bejelentkezés</h2>
-    <input type="text" placeholder="Email/Username" bind:value={identifier} required />
-    <input type="password" placeholder="Password" bind:value={password} required />
-    <button type="submit">Login</button>
-
-    {#if message}
-        <p>{message}</p>
-    {/if}
-
-    <p class="option-prompt">You don't have an account yet? <a href="/register">Register One!</a></p>
-</form>
+<AuthForm
+        title="Login"
+        {fields}
+        onSubmit={login}
+        {message}
+        promptText="You don't have an account yet?"
+        promptLink="/register"
+        promptLinkText="Register One!"
+/>

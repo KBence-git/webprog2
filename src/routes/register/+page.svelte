@@ -1,4 +1,7 @@
 <script>
+    import AuthForm from '../../components/AuthForm.svelte';
+    import '../../styles/auth.scss';
+
     let username = '';
     let email = '';
     let password = '';
@@ -14,16 +17,35 @@
         const result = await response.json();
         message = result.message;
     }
+
+    const fields = [
+        {
+            type: 'text',
+            placeholder: 'Username',
+            value: username,
+            onInput: val => username = val
+        },
+        {
+            type: 'email',
+            placeholder: 'Email',
+            value: email,
+            onInput: val => email = val
+        },
+        {
+            type: 'password',
+            placeholder: 'Password',
+            value: password,
+            onInput: val => password = val
+        }
+    ];
 </script>
 
-<form on:submit|preventDefault={register} class="auth-form">
-    <h2>Regisztráció</h2>
-    <input type="text" placeholder="Username" bind:value={username} required />
-    <input type="email" placeholder="Email" bind:value={email} required />
-    <input type="password" placeholder="Password" bind:value={password} required />
-    <button type="submit">Registration</button>
-    {#if message}
-        <p>{message}</p>
-    {/if}
-    <p class="option-prompt">You already have an Account? <a href="/login">Log In!</a></p>
-</form>
+<AuthForm
+        title="Registration"
+        {fields}
+        onSubmit={register}
+        {message}
+        promptText="You already have an Account?"
+        promptLink="/login"
+        promptLinkText="Log In!"
+/>
