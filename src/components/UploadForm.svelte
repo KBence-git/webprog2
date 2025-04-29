@@ -151,5 +151,9 @@
         <p class="error-message">Missing detail</p>
     {/if}
 
+    <label>Recipe Image:</label>
+    <input type="file" accept="image/*" on:change={(e) => image = e.target.files[0]} />
+
+
     <button type="button" on:click={saveRecipe} class="submit-button">Save Recipe</button>
 </form>

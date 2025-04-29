@@ -8,6 +8,7 @@
     let recipes = [];
     let selectedRecipe = null;
     let nutrition = null;
+    let loading = true;
 
     onMount(async () => {
         const res = await fetch('/api/recipes');
@@ -15,7 +16,9 @@
             recipes = await res.json();
             recipes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         }
+        loading = false;
     });
+
 
     async function openRecipe(recipe) {
         selectedRecipe = recipe;
@@ -30,8 +33,9 @@
 
 <section class="recipes-page">
     <h1>Recipes</h1>
-
-    {#if recipes.length > 0}
+    {#if loading}
+        <p>Loading recipes...</p>
+    {:else if recipes.length > 0}
         <div class="recipes-grid">
             {#each recipes as recipe}
                 <RecipeCard {recipe} onClick={openRecipe} />

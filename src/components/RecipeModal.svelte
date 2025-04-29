@@ -31,5 +31,9 @@
 
         <h3>Details:</h3>
         <p>{recipe.description}</p>
+        {#if recipe.image}
+            <img src={recipe.image} alt={recipe.title} class="recipe-full-image" />
+        {/if}
+
     </div>
 </div>

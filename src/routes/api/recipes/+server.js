@@ -4,8 +4,10 @@ import dayjs from 'dayjs';
 
 const filePath = path.resolve('src/data/recipes.json');
 
+const uploadsDir = path.resolve('static/uploads');
+
 export async function POST({ request }) {
-    const { title, ingredients, description, username } = await request.json();
+    const { title, ingredients, description, username, image } = await request.json();
 
     try {
         let recipes = [];
@@ -15,6 +17,18 @@ export async function POST({ request }) {
             recipes = JSON.parse(data);
         } catch (error) {
             // nincs fájl, majd létrehozzuk
+        } catch {}
+
+        // Mentés fájlba, ha van base64-es kép
+        let imagePath = '';
+        if (image) {
+            const base64Data = image.split(',')[1];
+            const extMatch = image.match(/^data:image\/(png|jpeg|jpg);base64,/);
+            const ext = extMatch ? extMatch[1] : 'png';
+            const fileName = `recipe_${Date.now()}.${ext}`;
+            const fullPath = path.join(uploadsDir, fileName);
+            await fs.writeFile(fullPath, base64Data, 'base64');
+            imagePath = `/uploads/${fileName}`;
         }
 
         const newRecipe = {
@@ -23,12 +37,11 @@ export async function POST({ request }) {
             ingredients,
             description,
             username,
+            image: imagePath,
             createdAt: dayjs().format('YYYY-MM-DD HH:mm')
         };
 
-
         recipes.push(newRecipe);
-
         await fs.writeFile(filePath, JSON.stringify(recipes, null, 2));
 
         return new Response(JSON.stringify({ message: 'Recipe Succesfully Saved!' }), { status: 200 });
