@@ -208,7 +208,7 @@
 }
 .recipe-full-image {
   width: 100%;
-  max-height: 300px;
+  max-height: 400px;
   object-fit: contain;
   margin-top: 1rem;
   border-radius: 8px;
@@ -216,4 +216,52 @@
 p{
   font-size: 35px;
   font-style: italic;
+}
+
+.ingredient-dropdown {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.ingredient-dropdown-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.ingredient-dropdown-content {
+  position: static;
+  margin-top: 0.5rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+
+.ingredient-dropdown-content label {
+  display: block;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+
+.recipes-page p {
+  margin-top: 1rem;
+  font-style: italic;
+}
+.recipes-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
